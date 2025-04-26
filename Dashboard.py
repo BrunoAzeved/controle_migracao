@@ -2,12 +2,13 @@ import streamlit as st
 import config
 import pandas as pd
 
+
 # Configuração da página
 st.set_page_config(
     page_title="Dashboard de Migração",
     page_icon=":bar_chart:",
     layout="wide",
-    initial_sidebar_state="expanded"
+    initial_sidebar_state="expanded",
 )
 
 # Configuração da logo
@@ -42,7 +43,9 @@ fluxos_disponiveis_para_migrar = len(
         (df_migrados["Disponível para Migrar"] == "Sim") & ~df_migrados["migrado"]
     ]
 )
-fluxos_nao_disponiveis = len(df_migrados[df_migrados["Disponível para Migrar"] == "Não"])
+fluxos_nao_disponiveis = len(
+    df_migrados[df_migrados["Disponível para Migrar"] == "Não"]
+)
 
 # Exibe as métricas no dashboard
 col1, col2, col3, col4 = st.columns(4)
@@ -62,9 +65,15 @@ with col2:
     )
 
 with col3:
-    st.metric(label="Disponíveis para Migrar", value=fluxos_disponiveis_para_migrar)
+    st.metric(
+        label="Disponíveis para Migrar",
+        value=fluxos_disponiveis_para_migrar,
+    )
 
 with col4:
-    st.metric(label="Não Disponíveis para Migrar", value=fluxos_nao_disponiveis)
+    st.metric(
+        label="Não Disponíveis para Migrar",
+        value=fluxos_nao_disponiveis,
+    )
 
-df_migrados
+st.dataframe(df_migrados)
