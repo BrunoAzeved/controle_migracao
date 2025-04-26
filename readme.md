@@ -1,5 +1,7 @@
 # Controle de Migração
 
+[![CI - Controle Migração](https://github.com/BrunoAzeved/controle_migracao/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/BrunoAzeved/controle_migracao/actions/workflows/ci.yml)
+
 Este projeto é um sistema para gerenciar e monitorar o status de migração de fluxos e suas dependências. Ele foi desenvolvido utilizando **Streamlit** e **Pandas**.
 
 ## Funcionalidades Principais
