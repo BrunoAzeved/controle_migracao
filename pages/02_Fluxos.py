@@ -71,4 +71,3 @@ if not controle_fluxos_df.empty:
 
 else:
     st.info("Nenhum fluxo está disponível para exibição.")
-    
