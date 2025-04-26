@@ -1,7 +1,7 @@
 import pandas as pd
 import os
 
-# Diretórios e arquivos
+# Caminhos dos arquivos
 ARCHIVES_DIR = "archives"
 DATA_FILE = os.path.join(ARCHIVES_DIR, "data.csv")
 FLUXOS_FILE = os.path.join(ARCHIVES_DIR, "fluxos.csv")
