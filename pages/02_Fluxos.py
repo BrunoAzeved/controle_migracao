@@ -13,7 +13,9 @@ if not os.path.exists(config.DATA_FILE) or not os.path.exists(config.FLUXOS_FILE
 # Carrega os dados
 data_df = pd.read_csv(config.DATA_FILE)
 fluxos_df = pd.read_csv(config.FLUXOS_FILE)
-controle_fluxos_df = pd.read_csv(os.path.join(config.ARCHIVES_DIR, "controle_fluxos.csv"))
+controle_fluxos_df = pd.read_csv(
+    os.path.join(config.ARCHIVES_DIR, "controle_fluxos.csv")
+)
 
 
 # Função para verificar se todas as dependências de um fluxo estão prontas

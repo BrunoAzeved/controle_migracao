@@ -24,7 +24,9 @@ def atualizar_disponibilidade_para_migrar():
         or not os.path.exists(FLUXOS_FILE)
         or not os.path.exists(CONTROLE_FILE)
     ):
-        raise FileNotFoundError("Um ou mais arquivos necessários não foram encontrados.")
+        raise FileNotFoundError(
+            "Um ou mais arquivos necessários não foram encontrados."
+        )
 
     # Carrega os dados
     data_df = pd.read_csv(DATA_FILE)
