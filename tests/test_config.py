@@ -1,4 +1,2 @@
-from config import atualizar_disponibilidade_para_migrar
-
-def test_dummy():
+def test_sanity():
     assert 1 + 1 == 2
