@@ -1,0 +1,41 @@
+# Ignorar arquivos e diretórios do Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.env
+*.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# Ignorar arquivos de configuração do sistema operacional
+.DS_Store
+Thumbs.db
+
+# Ignorar arquivos de log
+*.log
+
+# Ignorar arquivos de banco de dados ou temporários
+*.sqlite3
+*.db
+*.tmp
+
+# Ignorar arquivos de configuração do Streamlit
+.streamlit/
+
+# Ignorar arquivos de dados gerados
+archives/*.csv
+!archives/controle_fluxos.csv  # Exceção: manter controle_fluxos.csv no repositório
+
+# Ignorar arquivos de pacotes e dependências
+*.egg-info/
+dist/
+build/
+
+# Ignorar arquivos de IDEs
+.vscode/
+.idea/
+*.code-workspace
