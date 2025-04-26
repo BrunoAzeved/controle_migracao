@@ -55,6 +55,7 @@ with col1:
         label="Fluxos Migrados",
         value=fluxos_migrados,
         delta=f"{fluxos_migrados} de {total_fluxos}",
+        border=True
     )
 
 with col2:
@@ -62,18 +63,21 @@ with col2:
         label="Fluxos Não Migrados",
         value=fluxos_nao_migrados,
         delta=f"{fluxos_nao_migrados} de {total_fluxos}",
+        border=True
     )
 
 with col3:
     st.metric(
         label="Disponíveis para Migrar",
         value=fluxos_disponiveis_para_migrar,
+        border=True
     )
 
 with col4:
     st.metric(
         label="Não Disponíveis para Migrar",
         value=fluxos_nao_disponiveis,
+        border=True
     )
 
 st.dataframe(df_migrados)
