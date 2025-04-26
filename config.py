@@ -1,6 +1,7 @@
 import pandas as pd
 import os
 
+
 # Caminhos dos arquivos
 ARCHIVES_DIR = "archives"
 DATA_FILE = os.path.join(ARCHIVES_DIR, "data.csv")
@@ -10,14 +11,19 @@ CONTROLE_FILE = os.path.join(ARCHIVES_DIR, "controle_fluxos.csv")
 # Configuração da logo
 LOGO_B3_NEGATIVO = "images/logo_b3_negativo.png"
 
-#Função para atualizar o campo "Disponível para Migrar" no controle_fluxos.csv
+
+# Função para atualizar o campo "Disponível para Migrar" no controle_fluxos.csv
 def atualizar_disponibilidade_para_migrar():
     """
     Atualiza o campo 'Disponível para Migrar' no arquivo controle_fluxos.csv
     com base no status das dependências em data.csv e fluxos.csv.
     """
     # Verifica se os arquivos necessários existem
-    if not os.path.exists(DATA_FILE) or not os.path.exists(FLUXOS_FILE) or not os.path.exists(CONTROLE_FILE):
+    if (
+        not os.path.exists(DATA_FILE)
+        or not os.path.exists(FLUXOS_FILE)
+        or not os.path.exists(CONTROLE_FILE)
+    ):
         raise FileNotFoundError("Um ou mais arquivos necessários não foram encontrados.")
 
     # Carrega os dados

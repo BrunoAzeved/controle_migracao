@@ -1,7 +1,9 @@
 import streamlit as st
 import pandas as pd
-import os, time
+import os
+import time
 import config  # Importa o arquivo de configuração
+
 
 # Configuração da página
 st.set_page_config(layout="wide")
@@ -15,7 +17,7 @@ if not os.path.exists(config.ARCHIVES_DIR):
 
 st.title("Controle Migração")
 
-data_df = pd.read_csv(config.DATA_FILE, parse_dates=['data_prevista'])
+data_df = pd.read_csv(config.DATA_FILE, parse_dates=["data_prevista"])
 
 edited_df = st.data_editor(
     data_df,
@@ -23,7 +25,7 @@ edited_df = st.data_editor(
         "data_prevista": st.column_config.DateColumn(
             label="Data Prevista",
             pinned=True,
-            width="large"
+            width="large",
         ),
         "rating": st.column_config.NumberColumn(
             label="Rating",
@@ -32,11 +34,11 @@ edited_df = st.data_editor(
             step=1,
             format="%d ⭑",
             help="Avaliação do arquivo",
-            width="small"
-        )
+            width="small",
+        ),
     },
     num_rows="dynamic",
-    hide_index=False
+    hide_index=False,
 )
 
 if st.sidebar.button("Salvar Alterações"):
