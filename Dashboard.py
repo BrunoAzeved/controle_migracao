@@ -21,9 +21,9 @@ st.header("Dashboard de Controle de Migração")
 config.atualizar_disponibilidade_para_migrar()
 
 # Carrega os dados
-df_migrados = pd.read_csv(config.CONTROLE_FILE)
-data_df = pd.read_csv(config.DATA_FILE)
-fluxos_df = pd.read_csv(config.FLUXOS_FILE)
+df_migrados = pd.read_csv(config.CONTROLE_FILE, sep=";")
+data_df = pd.read_csv(config.DATA_FILE, sep=";")
+fluxos_df = pd.read_csv(config.FLUXOS_FILE, sep=";")
 
 # Verifica inconsistências: fluxos não disponíveis marcados como migrados
 fluxos_inconsistentes = df_migrados[
@@ -152,3 +152,32 @@ fig = px.pie(
     status_fluxos, names="Status", values="Quantidade", title="Distribuição dos Fluxos"
 )
 st.plotly_chart(fig)
+
+fluxos_por_tipo = df_migrados.groupby(["Tipo", "migrado"]).size().unstack(fill_value=0)
+
+# Renomeia as colunas para facilitar a leitura
+fluxos_por_tipo.columns = ["Não Migrados", "Migrados"]
+
+# Cria o gráfico de barras empilhado com cores personalizadas
+fig = px.bar(
+    fluxos_por_tipo,
+    x=fluxos_por_tipo.index,
+    y=["Não Migrados", "Migrados"],
+    title="Fluxos por Tipo (Empilhado por Status)",
+    labels={"value": "Quantidade", "Tipo": "Tipo de Fluxo"},
+    color_discrete_map={"Não Migrados": "orange", "Migrados": "green"},
+    barmode="stack",
+)
+
+st.plotly_chart(fig)
+
+disponiveis_por_tipo = (
+    df_migrados[
+        (df_migrados["Disponível para Migrar"] == "Sim") & (~df_migrados["migrado"])
+    ]
+    .groupby("Tipo")
+    .size()
+)
+
+st.write("Fluxos Disponíveis para Migração por Tipo")
+st.bar_chart(disponiveis_por_tipo)

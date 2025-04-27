@@ -17,7 +17,7 @@ if not os.path.exists(config.ARCHIVES_DIR):
 
 st.title("Controle Migração")
 
-data_df = pd.read_csv(config.DATA_FILE, parse_dates=["data_prevista"])
+data_df = pd.read_csv(config.DATA_FILE, parse_dates=["data_prevista"], sep=";")
 
 edited_df = st.data_editor(
     data_df,

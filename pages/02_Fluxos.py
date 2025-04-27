@@ -11,10 +11,10 @@ if not os.path.exists(config.DATA_FILE) or not os.path.exists(config.FLUXOS_FILE
     st.stop()
 
 # Carrega os dados
-data_df = pd.read_csv(config.DATA_FILE)
-fluxos_df = pd.read_csv(config.FLUXOS_FILE)
+data_df = pd.read_csv(config.DATA_FILE, sep=";")
+fluxos_df = pd.read_csv(config.FLUXOS_FILE, sep=";")
 controle_fluxos_df = pd.read_csv(
-    os.path.join(config.ARCHIVES_DIR, "controle_fluxos.csv")
+    os.path.join(config.ARCHIVES_DIR, "controle_fluxos.csv"), sep=";"
 )
 
 

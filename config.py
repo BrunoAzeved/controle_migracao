@@ -29,9 +29,9 @@ def atualizar_disponibilidade_para_migrar():
         )
 
     # Carrega os dados
-    data_df = pd.read_csv(DATA_FILE)
-    fluxos_df = pd.read_csv(FLUXOS_FILE)
-    controle_fluxos_df = pd.read_csv(CONTROLE_FILE)
+    data_df = pd.read_csv(DATA_FILE, sep=";")
+    fluxos_df = pd.read_csv(FLUXOS_FILE, sep=";")
+    controle_fluxos_df = pd.read_csv(CONTROLE_FILE, sep=";")
 
     # Função para verificar se todas as dependências de um fluxo estão prontas
     def is_fluxo_ready(fluxo):
@@ -44,4 +44,4 @@ def atualizar_disponibilidade_para_migrar():
     )
 
     # Salva as alterações no arquivo controle_fluxos.csv
-    controle_fluxos_df.to_csv(CONTROLE_FILE, index=False)
+    controle_fluxos_df.to_csv(CONTROLE_FILE, index=False, sep=";")
