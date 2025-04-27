@@ -1,6 +1,7 @@
 import streamlit as st
 import config
 import pandas as pd
+import plotly.express as px
 
 
 # Configuração da página
@@ -20,19 +21,49 @@ st.header("Dashboard de Controle de Migração")
 config.atualizar_disponibilidade_para_migrar()
 
 # Carrega os dados
-df_migrados = pd.read_csv(config.CONTROLE_FILE)
+df_migrados = pd.read_csv(config.CONTROLE_FILE, sep=";")
+data_df = pd.read_csv(config.DATA_FILE, sep=";")
+fluxos_df = pd.read_csv(config.FLUXOS_FILE, sep=";")
 
 # Verifica inconsistências: fluxos não disponíveis marcados como migrados
 fluxos_inconsistentes = df_migrados[
     (df_migrados["Disponível para Migrar"] == "Não") & df_migrados["migrado"]
 ]
 
+# Identifica tabelas que não foram migradas e que deveriam estar prontas
+dependencias_inconsistentes = fluxos_df[
+    fluxos_df["fluxo"].isin(fluxos_inconsistentes["Fluxo"])
+]["dependencia"]
+
+tabelas_nao_migradas = data_df[
+    (data_df["tabela_op"].isin(dependencias_inconsistentes)) & (~data_df["pronta"])
+]
+
 # Exibe um warning se houver fluxos inconsistentes
 if not fluxos_inconsistentes.empty:
-    st.warning(
-        f"Existem {len(fluxos_inconsistentes)} fluxos marcados como migrados, "
-        "mas que não estão disponíveis para migração. Verifique os dados!"
-    )
+    num_fluxos_inconsistentes = len(fluxos_inconsistentes)
+    if num_fluxos_inconsistentes == 1:
+        st.warning(
+            f"Existe {num_fluxos_inconsistentes} fluxo marcado como migrado, "
+            "mas que não está disponível para migração. Verifique os dados!"
+        )
+    else:
+        st.warning(
+            f"Existem {num_fluxos_inconsistentes} fluxos marcados como migrados, "
+            "mas que não estão disponíveis para migração. Verifique os dados!"
+        )
+
+    # Campo expansível para exibir detalhes
+    with st.expander("Detalhes das Inconsistências"):
+        col1, col2 = st.columns(2)
+
+        with col1:
+            st.subheader("Fluxos Marcados como Migrados (Inconsistentes)")
+            st.write(fluxos_inconsistentes[["Fluxo", "data_migracao"]])
+
+        with col2:
+            st.subheader("Tabelas Não Migradas")
+            st.write(tabelas_nao_migradas[["tabela_op", "data_prevista"]])
 
 # Calcula as métricas
 total_fluxos = len(df_migrados)
@@ -55,7 +86,6 @@ with col1:
         label="Fluxos Migrados",
         value=fluxos_migrados,
         delta=f"{fluxos_migrados} de {total_fluxos}",
-        border=True,
     )
 
 with col2:
@@ -63,19 +93,91 @@ with col2:
         label="Fluxos Não Migrados",
         value=fluxos_nao_migrados,
         delta=f"{fluxos_nao_migrados} de {total_fluxos}",
-        border=True,
     )
 
 with col3:
-    st.metric(
-        label="Disponíveis para Migrar",
-        value=fluxos_disponiveis_para_migrar,
-        border=True,
-    )
+    st.metric(label="Disponíveis para Migrar", value=fluxos_disponiveis_para_migrar)
 
 with col4:
-    st.metric(
-        label="Não Disponíveis para Migrar", value=fluxos_nao_disponiveis, border=True
-    )
+    st.metric(label="Processos Aguardando Liberação", value=fluxos_nao_disponiveis)
 
-st.dataframe(df_migrados)
+percentual_migrados = (fluxos_migrados / total_fluxos) * 100 if total_fluxos > 0 else 0
+st.metric(
+    label="Percentual de Fluxos Migrados",
+    value=f"{percentual_migrados:.2f}%",
+)
+
+fluxos_disponiveis = df_migrados[
+    (df_migrados["Disponível para Migrar"] == "Sim") & ~df_migrados["migrado"]
+]
+with st.expander("Fluxos Disponíveis para Migração"):
+    st.write(fluxos_disponiveis[["Fluxo", "Disponível para Migrar"]])
+
+historico_migrados = df_migrados[df_migrados["migrado"]][["Fluxo", "data_migracao"]]
+with st.expander("Histórico de Fluxos Migrados"):
+    st.write(historico_migrados)
+
+data_df["data_prevista"] = pd.to_datetime(data_df["data_prevista"], errors="coerce")
+tabelas_atrasadas = data_df[
+    (data_df["data_prevista"] < pd.Timestamp.now()) & (~data_df["pronta"])
+]
+with st.expander("Tabelas com Atraso"):
+    st.write(tabelas_atrasadas[["tabela_op", "data_prevista"]])
+
+tabelas_mais_dependentes = fluxos_df["dependencia"].value_counts()
+tabelas_nao_migradas_dependentes = tabelas_mais_dependentes[
+    tabelas_mais_dependentes.index.isin(tabelas_nao_migradas["tabela_op"])
+]
+with st.expander("Tabelas Mais Dependentes (Não Migradas)"):
+    st.write(tabelas_nao_migradas_dependentes)
+
+status_fluxos = pd.DataFrame(
+    {
+        "Status": [
+            "Migrados",
+            "Não Migrados",
+            "Disponíveis para Migrar",
+            "Não Disponíveis",
+        ],
+        "Quantidade": [
+            fluxos_migrados,
+            fluxos_nao_migrados,
+            fluxos_disponiveis_para_migrar,
+            fluxos_nao_disponiveis,
+        ],
+    }
+)
+
+fig = px.pie(
+    status_fluxos, names="Status", values="Quantidade", title="Distribuição dos Fluxos"
+)
+st.plotly_chart(fig)
+
+fluxos_por_tipo = df_migrados.groupby(["Tipo", "migrado"]).size().unstack(fill_value=0)
+
+# Renomeia as colunas para facilitar a leitura
+fluxos_por_tipo.columns = ["Não Migrados", "Migrados"]
+
+# Cria o gráfico de barras empilhado com cores personalizadas
+fig = px.bar(
+    fluxos_por_tipo,
+    x=fluxos_por_tipo.index,
+    y=["Não Migrados", "Migrados"],
+    title="Fluxos por Tipo (Empilhado por Status)",
+    labels={"value": "Quantidade", "Tipo": "Tipo de Fluxo"},
+    color_discrete_map={"Não Migrados": "orange", "Migrados": "green"},
+    barmode="stack",
+)
+
+st.plotly_chart(fig)
+
+disponiveis_por_tipo = (
+    df_migrados[
+        (df_migrados["Disponível para Migrar"] == "Sim") & (~df_migrados["migrado"])
+    ]
+    .groupby("Tipo")
+    .size()
+)
+
+st.write("Fluxos Disponíveis para Migração por Tipo")
+st.bar_chart(disponiveis_por_tipo)

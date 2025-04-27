@@ -17,7 +17,7 @@ if not os.path.exists(config.ARCHIVES_DIR):
 
 st.title("Controle Migração")
 
-data_df = pd.read_csv(config.DATA_FILE, parse_dates=["data_prevista"])
+data_df = pd.read_csv(config.DATA_FILE, parse_dates=["data_prevista"], sep=";")
 
 edited_df = st.data_editor(
     data_df,
@@ -43,7 +43,7 @@ edited_df = st.data_editor(
 
 if st.sidebar.button("Salvar Alterações"):
     data_df = edited_df
-    data_df.to_csv(config.DATA_FILE, index=False)
+    data_df.to_csv(config.DATA_FILE, index=False, sep=";")
     st.sidebar.success("Alterações salvas com sucesso!")
     config.atualizar_disponibilidade_para_migrar()
     time.sleep(2)

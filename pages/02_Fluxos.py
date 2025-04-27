@@ -4,6 +4,8 @@ import os
 import config  # Importa o arquivo de configuração
 import time
 
+# Configuração da logo
+st.logo(config.LOGO_B3_NEGATIVO, size="large", icon_image=config.LOGO_B3_NEGATIVO)
 
 # Verifica se os arquivos necessários existem
 if not os.path.exists(config.DATA_FILE) or not os.path.exists(config.FLUXOS_FILE):
@@ -11,10 +13,10 @@ if not os.path.exists(config.DATA_FILE) or not os.path.exists(config.FLUXOS_FILE
     st.stop()
 
 # Carrega os dados
-data_df = pd.read_csv(config.DATA_FILE)
-fluxos_df = pd.read_csv(config.FLUXOS_FILE)
+data_df = pd.read_csv(config.DATA_FILE, sep=";")
+fluxos_df = pd.read_csv(config.FLUXOS_FILE, sep=";")
 controle_fluxos_df = pd.read_csv(
-    os.path.join(config.ARCHIVES_DIR, "controle_fluxos.csv")
+    os.path.join(config.ARCHIVES_DIR, "controle_fluxos.csv"), sep=";"
 )
 
 
@@ -61,7 +63,7 @@ if not controle_fluxos_df.empty:
 
     # Atualiza o status de migração com base nas edições feitas pelo usuário
     if st.sidebar.button("Salvar Alterações"):
-        edited_fluxos_df.to_csv(config.CONTROLE_FILE, index=False)
+        edited_fluxos_df.to_csv(config.CONTROLE_FILE, index=False, sep=";")
         st.sidebar.success("Alterações salvas com sucesso!")
         config.atualizar_disponibilidade_para_migrar()
         time.sleep(2)
