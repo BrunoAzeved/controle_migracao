@@ -61,7 +61,7 @@ if not controle_fluxos_df.empty:
 
     # Atualiza o status de migração com base nas edições feitas pelo usuário
     if st.sidebar.button("Salvar Alterações"):
-        edited_fluxos_df.to_csv(config.CONTROLE_FILE, index=False)
+        edited_fluxos_df.to_csv(config.CONTROLE_FILE, index=False, sep=";")
         st.sidebar.success("Alterações salvas com sucesso!")
         config.atualizar_disponibilidade_para_migrar()
         time.sleep(2)
