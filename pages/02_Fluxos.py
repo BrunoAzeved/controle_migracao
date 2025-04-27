@@ -4,6 +4,8 @@ import os
 import config  # Importa o arquivo de configuração
 import time
 
+# Configuração da logo
+st.logo(config.LOGO_B3_NEGATIVO, size="large", icon_image=config.LOGO_B3_NEGATIVO)
 
 # Verifica se os arquivos necessários existem
 if not os.path.exists(config.DATA_FILE) or not os.path.exists(config.FLUXOS_FILE):
