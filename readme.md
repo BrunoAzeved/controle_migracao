@@ -4,22 +4,20 @@
 
 Este projeto é um sistema para gerenciar e monitorar o status de migração de fluxos e suas dependências. Ele foi desenvolvido utilizando **Streamlit** e **Pandas**.
 
-## Funcionalidades Principais
+## Funcionalidades
 
 - **Dashboard Interativo**:
-  - Apresenta métricas como:
-    - Total de fluxos migrados.
-    - Total de fluxos não migrados.
-    - Fluxos disponíveis para migração que ainda não foram migrados.
+  - Exibe métricas como:
+    - Total de fluxos migrados e não migrados.
+    - Fluxos disponíveis para migração.
     - Fluxos não disponíveis para migração.
-    - Teste
-  - Identifica inconsistências, como fluxos marcados como migrados, mas que não estão disponíveis para migração.
+  - Identifica inconsistências, como fluxos marcados como migrados, mas indisponíveis para migração.
 
 - **Atualização Automática**:
-  - O campo `Disponível para Migrar` no arquivo `controle_fluxos.csv` é atualizado automaticamente com base no status das dependências presentes nos arquivos `data.csv` e `fluxos.csv`.
+  - Atualiza o campo `Disponível para Migrar` no arquivo `controle_fluxos.csv` com base no status das dependências nos arquivos `data.csv` e `fluxos.csv`.
 
 - **Gerenciamento de Fluxos**:
-  - Permite marcar fluxos como migrados diretamente na interface do sistema.
+  - Permite marcar fluxos como migrados diretamente na interface.
 
 ## Estrutura do Projeto
 
@@ -30,7 +28,7 @@ controle_migracao/
 │   ├── fluxos.csv              # Dependências dos fluxos
 │   ├── controle_fluxos.csv     # Status dos fluxos
 ├── pages/
-│   ├── 01_Migração_Tabelas.py  # Página para controle das tabelas que foram ou não migradas
+│   ├── 01_Migração_Tabelas.py  # Página para controle das tabelas migradas
 │   ├── 02_Fluxos.py            # Página para gerenciar fluxos
 ├── config.py                   # Configurações e funções auxiliares
 ├── Dashboard.py                # Arquivo principal do dashboard
@@ -38,20 +36,20 @@ controle_migracao/
 └── README.md                   # Documentação do projeto
 ```
 
-## Pré-requisitos
+## Requisitos
 
 - **Python**: Versão 3.8 ou superior.
-- **Bibliotecas Necessárias**:
+- **Bibliotecas**:
   - `streamlit`
   - `pandas`
 
-Instale as dependências utilizando o comando:
+Instale as dependências com:
 
 ```bash
 pip install -r requirements.txt
 ```
 
-## Instalação
+## Como Usar
 
 1. Clone o repositório:
    ```bash
@@ -59,16 +57,16 @@ pip install -r requirements.txt
    cd controle_migracao
    ```
 
-2. Execute o dashboard:
+2. Inicie o dashboard:
    ```bash
    streamlit run Dashboard.py
    ```
 
-Pronto! Agora você pode acessar o sistema no navegador e começar a gerenciar os fluxos de migração.
+Acesse o sistema no navegador para gerenciar os fluxos de migração.
 
-## Contribuição
+## Contribuindo
 
-Contribuições são bem-vindas! Sinta-se à vontade para abrir issues ou enviar pull requests.
+Contribuições são bem-vindas! Abra issues ou envie pull requests para melhorias.
 
 ## Licença
 
