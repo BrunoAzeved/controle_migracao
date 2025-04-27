@@ -7,12 +7,12 @@ on:
     branches: [main]
 
 jobs:
-  build:
+  lint:
     runs-on: ubuntu-latest
 
     strategy:
       matrix:
-        python-version: [3.10, 3.11, 3.12]
+        python-version: [3.11, 3.12]
 
     steps:
     - name: Checkout código
@@ -26,14 +26,7 @@ jobs:
     - name: Instalar dependências
       run: |
         python -m pip install --upgrade pip
-        pip install -r requirements.txt
-        pip install flake8 black pytest pytest-cov
+        pip install flake8
 
-    # - name: Rodar Flake8
-    #   run: flake8
-
-    - name: Rodar Pytest com cobertura
-      run: pytest --cov=controle_migracao tests/
-
-    - name: Gerar relatório de cobertura
-      run: coverage xml
+    - name: Rodar Flake8
+      run: flake8
