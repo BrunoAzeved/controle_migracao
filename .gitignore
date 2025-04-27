@@ -26,9 +26,8 @@ Thumbs.db
 # Ignorar arquivos de configuração do Streamlit
 .streamlit/
 
-# Ignorar arquivos de dados gerados
+# Ignorar todos os arquivos de dados na pasta archives/
 archives/*.csv
-!archives/controle_fluxos.csv  # Exceção: manter controle_fluxos.csv no repositório
 
 # Ignorar arquivos de pacotes e dependências
 *.egg-info/
