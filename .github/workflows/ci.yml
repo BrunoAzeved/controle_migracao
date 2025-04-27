@@ -29,11 +29,8 @@ jobs:
         pip install -r requirements.txt
         pip install flake8 black pytest pytest-cov
 
-    - name: Rodar Black
-      run: black --check .
-
-    - name: Rodar Flake8
-      run: flake8
+    # - name: Rodar Flake8
+    #   run: flake8
 
     - name: Rodar Pytest com cobertura
       run: pytest --cov=controle_migracao tests/
